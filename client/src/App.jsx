@@ -53,7 +53,8 @@ export default function App() {
 
   const showStatus = useCallback((message, type = 'info') => {
     setStatus({ message, type })
-    if (type !== 'error') setTimeout(() => setStatus(null), 5000)
+    const duration = window.innerWidth < 1024 ? 2000 : 5000
+    if (type !== 'error') setTimeout(() => setStatus(null), duration)
   }, [])
 
   const refreshInbox = useCallback(async (silent = false) => {
