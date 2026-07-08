@@ -42,17 +42,17 @@ export default function QuickViewModal({ message, onClose }) {
   const hasContent = content.length > 0
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex" onClick={onClose}>
       <div className="absolute inset-0 neo-backdrop" />
 
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col neo-card rounded-none animate-scale-in"
+        className="relative w-full flex flex-col neo-card animate-scale-in rounded-none lg:rounded-none lg:max-w-4xl lg:max-h-[90vh] lg:m-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-start justify-between px-4 lg:px-6 pt-4 lg:pt-6 pb-4 neo-divider shrink-0">
           <div className="min-w-0 flex-1 pr-4">
-            <h2 className="text-xl font-black truncate" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
+            <h2 className="text-base lg:text-xl font-black truncate" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
               {escapeHtml(message.subject || '(No Subject)')}
             </h2>
             <div className="flex flex-col gap-y-0.5 mt-2 text-xs font-bold" style={{ color: 'var(--neo-text-muted)' }}>

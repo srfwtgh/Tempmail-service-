@@ -1,25 +1,25 @@
 export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoRefresh, darkMode, onToggleDark }) {
   return (
     <header className="lg:col-span-2 neo-nav sticky top-0 z-30">
-      <div className="flex items-center justify-between px-3 lg:px-8 py-3 max-w-full">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 bg-accent border-3 border-[#000] shrink-0" style={{ boxShadow: '4px 4px 0 0 #000' }}>
-            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+      <div className="flex items-center justify-between px-3 lg:px-8 py-2.5 lg:py-3 max-w-full">
+        <div className="flex items-center gap-2.5 lg:gap-3">
+          <div className="flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 bg-accent border-3 border-[#000] shrink-0" style={{ boxShadow: '3px 3px 0 0 #000' }}>
+            <svg className="w-[18px] h-[18px] lg:w-5 lg:h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="M22 6l-10 7L2 6" />
             </svg>
           </div>
           <div>
-            <h1 className="text-lg sm:text-xl font-black tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
+            <h1 className="text-base lg:text-xl font-black tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
               Temp Mail
             </h1>
-            <p className="hidden sm:block text-[10px] tracking-widest uppercase font-bold leading-none" style={{ color: 'var(--neo-text-muted)' }}>
+            <p className="hidden lg:block text-[10px] tracking-widest uppercase font-bold leading-none" style={{ color: 'var(--neo-text-muted)' }}>
               Disposable Email
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
+        <div className="flex items-center gap-1 lg:gap-3">
           <button
             onClick={onToggleDark}
             className="neo-btn rounded-none p-2 flex items-center justify-center"
@@ -45,8 +45,8 @@ export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoR
           </button>
 
           {email && (
-            <>
-              <div className="hidden sm:flex items-center gap-2 text-xs font-bold" style={{ color: 'var(--neo-text-muted)' }}>
+            <div className="hidden lg:flex items-center gap-2">
+              <div className="flex items-center gap-2 text-xs font-bold" style={{ color: 'var(--neo-text-muted)' }}>
                 <span className="neo-badge inline-flex items-center gap-1.5 px-2.5 py-1 font-bold">
                   <svg className="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -56,14 +56,14 @@ export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoR
               </div>
 
               <label className="flex items-center gap-2 text-xs font-bold cursor-pointer select-none" style={{ color: 'var(--neo-text-muted)' }}>
-                <span className="hidden sm:inline">Auto</span>
+                <span>Auto</span>
                 <div className="relative">
                   <input type="checkbox" checked={autoRefresh} onChange={onToggleAutoRefresh} className="sr-only peer" />
                   <div className="neo-toggle-track rounded-none peer-checked:bg-accent" />
                   <div className="neo-toggle-thumb absolute rounded-none peer-checked:translate-x-[16px]" />
                 </div>
               </label>
-            </>
+            </div>
           )}
           <span className="hidden lg:inline text-[10px] tracking-wide font-bold uppercase" style={{ color: 'var(--neo-text-muted)' }}>
             Auto-delete 60min
