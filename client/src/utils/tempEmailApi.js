@@ -16,8 +16,10 @@ export async function fetchInbox(email, password) {
 }
 
 export async function deleteEmail(email) {
-  const res = await fetch(`${API_BASE}/delete?email=${encodeURIComponent(email)}`)
-  return res.json()
+  const res = await fetch(`${API_BASE}/delete?email=${encodeURIComponent(email)}`, { method: 'DELETE' })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || 'Failed to delete email')
+  return data
 }
 
 export function escapeHtml(text) {
@@ -49,14 +51,26 @@ export function formatFullDate(dateString) {
 const SESSION_KEY = 'tempEmail2Session'
 const MSGS_KEY = 'tempEmail2Messages'
 
+function obfuscate(str) {
+  if (!str) return ''
+  try { return btoa(str) } catch { return str }
+}
+
+function deobfuscate(str) {
+  if (!str) return ''
+  try { return atob(str) } catch { return str }
+}
+
 export function saveSession(email, password, expiresAt) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ email, password, expiresAt, ts: Date.now() }))
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ email, password: obfuscate(password), expiresAt, ts: Date.now() }))
 }
 
 export function loadSession() {
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY))
-    if (s && s.ts > Date.now() - 30 * 60 * 1000) return s
+    if (s && s.ts > Date.now() - 30 * 60 * 1000) {
+      return { ...s, password: deobfuscate(s.password) }
+    }
     clearSession()
   } catch { clearSession() }
   return null

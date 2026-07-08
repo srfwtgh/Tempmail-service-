@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import DOMPurify from 'dompurify'
 import { escapeHtml, formatFullDate } from '../utils/tempEmailApi'
 
 function resolveCidImages(html, attachments) {
@@ -96,7 +97,7 @@ export default function QuickViewModal({ message, onClose }) {
               <p className="text-sm font-black">No content available</p>
             </div>
           ) : hasHtml && showHtml ? (
-            <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: rawHtml }} />
+            <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawHtml, { ADD_TAGS: ['style'], ADD_ATTR: ['target'] }) }} />
           ) : (
             <pre className="whitespace-pre-wrap font-sans text-sm m-0" style={{ color: 'var(--neo-text)' }}>{escapeHtml(textContent || content)}</pre>
           )}

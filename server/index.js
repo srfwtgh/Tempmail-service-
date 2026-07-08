@@ -4,7 +4,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import hpp from 'hpp'
-import fetch from 'node-fetch'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { existsSync } from 'fs'
@@ -37,7 +36,6 @@ app.use(helmet({
       'font-src': ["'self'"],
       'object-src': ["'none'"],
       'frame-ancestors': ["'none'"],
-      'upgrade-insecure-requests': IS_PROD ? [] : null,
     },
   },
   crossOriginEmbedderPolicy: false,
@@ -96,7 +94,7 @@ app.post('/api/generate', async (_req, res) => {
     res.status(status).json(data || { success: false, error: 'Invalid upstream response' })
   } catch (error) {
     if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
-    console.error('Generate error:', error)
+    if (!IS_PROD) console.error('Generate error:', error)
     res.status(502).json({ success: false, error: 'Upstream service unavailable' })
   }
 })
@@ -111,7 +109,7 @@ app.get('/api/inbox', async (req, res) => {
     res.status(status).json(data || { success: false, error: 'Invalid upstream response' })
   } catch (error) {
     if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
-    console.error('Inbox error:', error)
+    if (!IS_PROD) console.error('Inbox error:', error)
     res.status(502).json({ success: false, error: 'Upstream service unavailable' })
   }
 })
@@ -126,13 +124,13 @@ app.get('/api/message', async (req, res) => {
     res.status(status).json(data || { success: false, error: 'Invalid upstream response' })
   } catch (error) {
     if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
-    console.error('Message error:', error)
+    if (!IS_PROD) console.error('Message error:', error)
     res.status(502).json({ success: false, error: 'Upstream service unavailable' })
   }
 })
 
 // ── Delete ───────────────────────────────────────────────────────
-app.get('/api/delete', async (req, res) => {
+app.delete('/api/delete', async (req, res) => {
   const { email } = req.query
   if (!email) return res.status(400).json({ success: false, error: 'Email required' })
   try {
@@ -141,7 +139,7 @@ app.get('/api/delete', async (req, res) => {
     res.status(status).json(data || { success: false, error: 'Invalid upstream response' })
   } catch (error) {
     if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
-    console.error('Delete error:', error)
+    if (!IS_PROD) console.error('Delete error:', error)
     res.status(502).json({ success: false, error: 'Upstream service unavailable' })
   }
 })
@@ -162,7 +160,7 @@ if (IS_PROD) {
 
 // ── Global error handler ─────────────────────────────────────────
 app.use((err, _req, res, _next) => {
-  console.error('Unhandled error:', err)
+  if (!IS_PROD) console.error('Unhandled error:', err)
   res.status(err.status || 500).json({ success: false, error: IS_PROD ? 'Internal server error' : err.message })
 })
 
