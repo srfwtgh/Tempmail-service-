@@ -1,7 +1,7 @@
 export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoRefresh, darkMode, onToggleDark }) {
   return (
     <header className="lg:col-span-2 neo-nav sticky top-0 z-30">
-      <div className="flex items-center justify-between px-5 lg:px-8 py-3 max-w-full">
+      <div className="flex items-center justify-between px-3 lg:px-8 py-3 max-w-full">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-10 h-10 bg-accent border-3 border-[#000] shrink-0" style={{ boxShadow: '4px 4px 0 0 #000' }}>
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -10,16 +10,16 @@ export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoR
             </svg>
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
+            <h1 className="text-lg sm:text-xl font-black tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
               Temp Mail
             </h1>
-            <p className="text-[10px] tracking-widest uppercase font-bold leading-none" style={{ color: 'var(--neo-text-muted)' }}>
+            <p className="hidden sm:block text-[10px] tracking-widest uppercase font-bold leading-none" style={{ color: 'var(--neo-text-muted)' }}>
               Disposable Email
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 lg:gap-3">
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
           <button
             onClick={onToggleDark}
             className="neo-btn rounded-none p-2 flex items-center justify-center"

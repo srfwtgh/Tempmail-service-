@@ -50,7 +50,7 @@ export default function QuickViewModal({ message, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between px-6 pt-6 pb-4 neo-divider shrink-0">
+        <div className="flex items-start justify-between px-4 lg:px-6 pt-4 lg:pt-6 pb-4 neo-divider shrink-0">
           <div className="min-w-0 flex-1 pr-4">
             <h2 className="text-xl font-black truncate" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
               {escapeHtml(message.subject || '(No Subject)')}
@@ -86,7 +86,7 @@ export default function QuickViewModal({ message, onClose }) {
         )}
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 text-sm leading-relaxed break-words" style={{ color: 'var(--neo-text)' }}>
+        <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-4 text-sm leading-relaxed break-words" style={{ color: 'var(--neo-text)' }}>
           {!hasContent ? (
             <div className="flex flex-col items-center justify-center py-14" style={{ color: 'var(--neo-text-muted)' }}>
               <svg className="w-10 h-10 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ export default function QuickViewModal({ message, onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end px-6 py-4 neo-divider shrink-0">
+        <div className="flex items-center justify-end px-4 lg:px-6 py-4 neo-divider shrink-0">
           <button onClick={onClose} className="neo-btn-accent rounded-none px-5 py-2 text-sm font-bold">
             Close
           </button>

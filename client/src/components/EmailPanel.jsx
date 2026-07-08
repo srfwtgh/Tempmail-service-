@@ -2,8 +2,8 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
   const btnBase = 'rounded-none px-4 py-3 text-sm font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2'
 
   return (
-    <aside className="p-4 lg:p-6 lg:border-r-3 lg:border-[var(--neo-border)] lg:min-h-0 lg:overflow-y-auto">
-      <div className="neo-card rounded-none p-5 lg:p-7 animate-fade-up">
+    <aside className="p-3 lg:p-6 lg:border-r-3 lg:border-[var(--neo-border)] lg:min-h-0 lg:overflow-y-auto">
+      <div className="neo-card rounded-none p-4 lg:p-7 animate-fade-up">
         <div className="mb-6">
           <label className="text-[10px] font-bold tracking-widest uppercase mb-2.5 block" style={{ color: 'var(--neo-text-muted)' }}>
             Your email address
@@ -20,7 +20,7 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5 mb-5">
+        <div className="grid grid-cols-2 gap-2 mb-4">
           <button onClick={onGenerate} disabled={generating} className={`${btnBase} neo-btn-accent rounded-none`}>
             {generating ? (
               <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -62,16 +62,16 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
 
         {email && (
           <div className="neo-divider pt-4 animate-fade-in">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="neo-card rounded-none px-4 py-3 text-center" style={{ boxShadow: '3px 3px 0 0 var(--neo-shadow)' }}>
-                <p className="text-2xl font-black text-accent leading-none" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{messageCount}</p>
-                <p className="text-[10px] font-bold tracking-wider uppercase mt-1.5" style={{ color: 'var(--neo-text-muted)' }}>Messages</p>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="neo-card rounded-none px-3 lg:px-4 py-2 lg:py-3 text-center" style={{ boxShadow: '3px 3px 0 0 var(--neo-shadow)' }}>
+                <p className="text-xl lg:text-2xl font-black text-accent leading-none" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{messageCount}</p>
+                <p className="text-[9px] lg:text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: 'var(--neo-text-muted)' }}>Messages</p>
               </div>
-              <div className="neo-card rounded-none px-4 py-3 text-center" style={{ boxShadow: '3px 3px 0 0 var(--neo-shadow)' }}>
-                <p className="text-2xl font-black leading-none" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
+              <div className="neo-card rounded-none px-3 lg:px-4 py-2 lg:py-3 text-center" style={{ boxShadow: '3px 3px 0 0 var(--neo-shadow)' }}>
+                <p className="text-xl lg:text-2xl font-black leading-none" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
                   {email ? 'Live' : '—'}
                 </p>
-                <p className="text-[10px] font-bold tracking-wider uppercase mt-1.5" style={{ color: 'var(--neo-text-muted)' }}>Status</p>
+                <p className="text-[9px] lg:text-[10px] font-bold tracking-wider uppercase mt-1" style={{ color: 'var(--neo-text-muted)' }}>Status</p>
               </div>
             </div>
           </div>
