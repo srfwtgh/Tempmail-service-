@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { Toaster, toast } from 'sonner'
 import Navbar from './components/Navbar'
-import StatusBar from './components/StatusBar'
 import EmailPanel from './components/EmailPanel'
 import InboxView from './components/InboxView'
 import QuickViewModal from './components/QuickViewModal'
@@ -21,7 +21,6 @@ export default function App() {
   const [messages, setMessages] = useState([])
   const [generating, setGenerating] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
-  const [status, setStatus] = useState(null)
   const [autoRefresh, setAutoRefresh] = useState(true)
   const [quickViewMsg, setQuickViewMsg] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -51,12 +50,6 @@ export default function App() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
   }, [autoRefresh, email, password])
 
-  const showStatus = useCallback((message, type = 'info') => {
-    setStatus({ message, type })
-    const duration = window.innerWidth < 1024 ? 2000 : 5000
-    if (type !== 'error') setTimeout(() => setStatus(null), duration)
-  }, [])
-
   const refreshInbox = useCallback(async (silent = false) => {
     if (!email || !password) return
     if (!silent) setRefreshing(true)
@@ -76,46 +69,46 @@ export default function App() {
     } catch (err) {
       if (err.message.includes('expired') || err.message.includes('not found')) {
         clearSession(); setEmail(''); setPassword(''); setMessages([])
-        showStatus('Email expired', 'error')
+        toast.error('Email expired')
       } else if (!silent) {
-        showStatus(err.message, 'error')
+        toast.error(err.message)
       }
     } finally {
       if (!silent) setRefreshing(false)
     }
-  }, [email, password, showStatus])
+  }, [email, password])
 
   const handleGenerate = useCallback(async () => {
     setGenerating(true)
     setMessages([])
-    showStatus('Creating your @pomailbox.com email...', 'info')
+    const toastId = toast.loading('Creating your @pomailbox.com email...')
     try {
       const data = await generateEmail()
       setEmail(data.email)
       setPassword(data.password || '')
       saveSession(data.email, data.password, data.expiresAt)
-      showStatus('Email generated successfully!', 'success')
+      toast.success('Email generated successfully!', { id: toastId })
       refreshInbox(true)
     } catch (err) {
-      showStatus(err.message, 'error')
+      toast.error(err.message, { id: toastId })
     } finally {
       setGenerating(false)
     }
-  }, [showStatus, refreshInbox])
+  }, [refreshInbox])
 
   const handleCopy = useCallback(() => {
     if (!email) return
     navigator.clipboard.writeText(email)
-      .then(() => showStatus('Email address copied!', 'success'))
-      .catch(() => showStatus('Failed to copy', 'error'))
-  }, [email, showStatus])
+      .then(() => toast.success('Email address copied!'))
+      .catch(() => toast.error('Failed to copy'))
+  }, [email])
 
   const handleDelete = useCallback(async () => {
     if (!confirm('Are you sure you want to delete this email?')) return
     try { await deleteEmail(email) } catch { /* ignore */ }
     clearSession(); setEmail(''); setPassword(''); setMessages([])
-    showStatus('Email deleted successfully', 'success')
-  }, [email, showStatus])
+    toast.success('Email deleted successfully')
+  }, [email])
 
   const filteredMessages = searchQuery
     ? messages.filter(m =>
@@ -126,6 +119,24 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-neo">
+      <Toaster
+        theme={darkMode ? 'dark' : 'light'}
+        position="top-center"
+        richColors
+        closeButton
+        duration={4000}
+        toastOptions={{
+          className: 'neo-toast',
+          style: {
+            background: 'var(--neo-card)',
+            border: '3px solid var(--neo-border)',
+            boxShadow: '5px 5px 0 0 var(--neo-shadow)',
+            color: 'var(--neo-text)',
+            fontFamily: "'Inter', sans-serif",
+          },
+        }}
+      />
+
       <div className="relative z-10 app-grid">
         <Navbar
           email={email}
@@ -164,8 +175,6 @@ export default function App() {
           Emails auto-delete after 60 minutes &middot; No data stored &middot; Open source
         </footer>
       </div>
-
-      <StatusBar status={status} onDismiss={() => setStatus(null)} />
 
       <QuickViewModal
         message={quickViewMsg}

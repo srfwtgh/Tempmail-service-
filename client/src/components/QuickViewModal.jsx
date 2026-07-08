@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import DOMPurify from 'dompurify'
-import { escapeHtml, formatFullDate } from '../utils/tempEmailApi'
+import { marked } from 'marked'
+import { formatFullDate } from '../utils/tempEmailApi'
 
 function resolveCidImages(html, attachments) {
   if (!html || !attachments || attachments.length === 0) return html
@@ -32,6 +33,13 @@ function extractText(msg) {
   return ''
 }
 
+function escapeHtml(text) {
+  if (!text) return ''
+  const d = document.createElement('div')
+  d.textContent = text
+  return d.innerHTML
+}
+
 export default function QuickViewModal({ message, onClose }) {
   const [showHtml, setShowHtml] = useState(true)
   if (!message) return null
@@ -41,6 +49,15 @@ export default function QuickViewModal({ message, onClose }) {
   const hasHtml = Boolean(rawHtml)
   const content = rawHtml || textContent
   const hasContent = content.length > 0
+
+  let renderedText = ''
+  if (textContent) {
+    try {
+      renderedText = DOMPurify.sanitize(marked.parse(textContent))
+    } catch {
+      renderedText = escapeHtml(textContent)
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex" onClick={onClose}>
@@ -99,7 +116,11 @@ export default function QuickViewModal({ message, onClose }) {
           ) : hasHtml && showHtml ? (
             <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawHtml, { ADD_TAGS: ['style'], ADD_ATTR: ['target'] }) }} />
           ) : (
-            <pre className="whitespace-pre-wrap font-sans text-sm m-0" style={{ color: 'var(--neo-text)' }}>{escapeHtml(textContent || content)}</pre>
+            <div
+              className="prose prose-sm max-w-none prose-p:my-1 prose-pre:my-2 prose-a:text-accent prose-strong:font-black"
+              style={{ color: 'var(--neo-text)' }}
+              dangerouslySetInnerHTML={{ __html: renderedText || escapeHtml(textContent || content) }}
+            />
           )}
         </div>
 

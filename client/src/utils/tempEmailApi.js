@@ -1,3 +1,5 @@
+import { formatDistanceToNow, format } from 'date-fns'
+
 const API_BASE = '/api'
 
 export async function generateEmail() {
@@ -31,21 +33,20 @@ export function escapeHtml(text) {
 
 export function formatRelativeTime(dateString) {
   if (!dateString) return ''
-  const diff = Date.now() - new Date(dateString).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'Just now'
-  if (mins < 60) return `${mins} min ago`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs}h ago`
-  return `${Math.floor(hrs / 24)}d ago`
+  try {
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true })
+  } catch {
+    return ''
+  }
 }
 
 export function formatFullDate(dateString) {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleString('en-US', {
-    year: 'numeric', month: 'long', day: 'numeric',
-    hour: '2-digit', minute: '2-digit',
-  })
+  try {
+    return format(new Date(dateString), 'MMMM d, yyyy h:mm a')
+  } catch {
+    return ''
+  }
 }
 
 const SESSION_KEY = 'tempEmail2Session'

@@ -261,3 +261,27 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up, .animate-scale-in, .msg-item { animation: none; }
 }
+
+/* ── Marked content (plain text emails) ─────────────────────── */
+.prose p { margin: 0.4em 0; }
+.prose ul, .prose ol { padding-left: 1.5em; margin: 0.4em 0; }
+.prose li { margin: 0.2em 0; }
+.prose a { color: #FF6B35; text-decoration: underline; font-weight: 700; }
+.prose strong { font-weight: 900; }
+.prose code { background: var(--neo-input-bg); padding: 0.15em 0.4em; border: 2px solid var(--neo-border); font-size: 0.9em; }
+.prose pre { background: var(--neo-input-bg); border: 3px solid var(--neo-border); padding: 1em; overflow-x: auto; }
+.prose blockquote { border-left: 4px solid #FF6B35; padding-left: 1em; margin: 0.5em 0; color: var(--neo-text-muted); }
+
+/* ── Sonner toast neobrutalism override ─────────────────────── */
+[data-sonner-toaster] {
+  --normal-bg: var(--neo-card) !important;
+  --normal-border: var(--neo-border) !important;
+  --normal-text: var(--neo-text) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+[data-sonner-toaster] [data-sonner-toast] {
+  border: 3px solid var(--neo-border) !important;
+  box-shadow: 5px 5px 0 0 var(--neo-shadow) !important;
+  background: var(--neo-card) !important;
+  color: var(--neo-text) !important;
+}
