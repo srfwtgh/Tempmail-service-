@@ -19,7 +19,32 @@ export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoR
           </div>
         </div>
 
-        <div className="flex items-center gap-1 lg:gap-3">
+        <div className="flex items-center gap-1.5 lg:gap-3">
+          {email && (
+            <label className="flex items-center gap-1.5 lg:gap-2 text-[11px] lg:text-xs font-bold cursor-pointer select-none" style={{ color: 'var(--neo-text-muted)' }}>
+              <span className="hidden sm:inline">Auto</span>
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={autoRefresh}
+                  onChange={onToggleAutoRefresh}
+                  className="sr-only peer"
+                />
+                <div className={`neo-toggle-track rounded-none ${autoRefresh ? 'checked' : ''}`} />
+                <div className={`neo-toggle-thumb rounded-none ${autoRefresh ? 'checked' : ''}`} />
+              </div>
+            </label>
+          )}
+
+          {email && (
+            <span className="hidden lg:inline-flex items-center gap-1.5 neo-badge text-xs font-bold px-2.5 py-1">
+              <svg className="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+              {messageCount} {messageCount === 1 ? 'msg' : 'msgs'}
+            </span>
+          )}
+
           <button
             onClick={onToggleDark}
             className="neo-btn rounded-none p-2 flex items-center justify-center"
@@ -44,27 +69,6 @@ export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoR
             )}
           </button>
 
-          {email && (
-            <div className="hidden lg:flex items-center gap-2">
-              <div className="flex items-center gap-2 text-xs font-bold" style={{ color: 'var(--neo-text-muted)' }}>
-                <span className="neo-badge inline-flex items-center gap-1.5 px-2.5 py-1 font-bold">
-                  <svg className="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                  </svg>
-                  {messageCount} {messageCount === 1 ? 'msg' : 'msgs'}
-                </span>
-              </div>
-
-              <label className="flex items-center gap-2 text-xs font-bold cursor-pointer select-none" style={{ color: 'var(--neo-text-muted)' }}>
-                <span>Auto</span>
-                <div className="relative">
-                  <input type="checkbox" checked={autoRefresh} onChange={onToggleAutoRefresh} className="sr-only peer" />
-                  <div className="neo-toggle-track rounded-none peer-checked:bg-accent" />
-                  <div className="neo-toggle-thumb absolute rounded-none peer-checked:translate-x-[16px]" />
-                </div>
-              </label>
-            </div>
-          )}
           <span className="hidden lg:inline text-[10px] tracking-wide font-bold uppercase" style={{ color: 'var(--neo-text-muted)' }}>
             Auto-delete 60min
           </span>

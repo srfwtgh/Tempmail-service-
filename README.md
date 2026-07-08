@@ -8,7 +8,7 @@ A disposable temp mail service with a neobrutalism UI. Generate temporary inboxe
 - **Live message viewing** — read full email content (HTML/Plain Text) inside the app, including inline images
 - **Neobrutalism UI** — bold borders, hard shadows, flat colors, Space Grotesk + Inter fonts
 - **Dark/Light mode** — toggle in the navbar, persisted to localStorage, defaults to system preference
-- **Auto-refresh** — polls inbox every 30 seconds, togglable
+- **Auto-refresh** — polls inbox every 10 seconds, togglable
 
 ## Tech Stack
 
