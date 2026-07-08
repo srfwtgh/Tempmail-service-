@@ -7,29 +7,34 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
       {/* ── Mobile bar ───────────────────────────────────────── */}
       <div className="lg:hidden w-full max-w-full">
         {email ? (
-          <div className="flex items-center gap-2 px-3 py-2.5 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)] w-full max-w-full">
-            <div className="flex-1 min-w-0 flex items-center gap-2">
-              <div className="neo-input rounded-none px-3 py-2 text-xs w-full truncate font-bold select-all cursor-text">
+          <div className="flex items-center gap-1.5 px-2.5 py-2 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)] w-full max-w-full overflow-x-hidden">
+            <div className="flex-1 min-w-0 flex items-center gap-1.5">
+              <div className="neo-input rounded-none px-2 py-1.5 text-[11px] w-full truncate font-bold select-all cursor-text">
                 {email}
               </div>
-              <span className="text-[9px] font-bold text-white bg-accent px-1.5 py-0.5 tracking-widest uppercase border-3 border-[#000] shrink-0" style={{ boxShadow: '2px 2px 0 0 #000' }}>
+              <span className="text-[8px] font-bold text-white bg-accent px-1 py-0.5 tracking-widest uppercase border-3 border-[#000] shrink-0" style={{ boxShadow: '1.5px 1.5px 0 0 #000' }}>
                 Live
               </span>
             </div>
-            <button onClick={onCopy} disabled={!email} className={iconBtn} title="Copy">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={onGenerate} disabled={generating} className="neo-btn-accent rounded-none p-2 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" title="New">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+            <button onClick={onCopy} disabled={!email} className="neo-btn rounded-none p-2 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" title="Copy">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <rect x="9" y="9" width="13" height="13" rx="1" ry="1" strokeWidth={2.5} />
                 <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" strokeWidth={2.5} />
               </svg>
             </button>
-            <button onClick={onRefresh} disabled={!email || refreshing} className={iconBtn} title="Refresh">
-              <svg className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={onRefresh} disabled={!email || refreshing} className="neo-btn rounded-none p-2 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" title="Refresh">
+              <svg className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <polyline points="23 4 23 10 17 10" strokeWidth={2.5} />
                 <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" strokeWidth={2.5} />
               </svg>
             </button>
-            <button onClick={onDelete} disabled={!email} className="neo-btn-danger rounded-none p-2.5 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" title="Delete">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={onDelete} disabled={!email} className="neo-btn-danger rounded-none p-2 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none" title="Delete">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <polyline points="3 6 5 6 21 6" strokeWidth={2.5} />
                 <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" strokeWidth={2.5} />
               </svg>
