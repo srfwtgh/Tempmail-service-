@@ -1,0 +1,79 @@
+const API_BASE = '/api'
+
+export async function generateEmail() {
+  const res = await fetch(`${API_BASE}/generate`, { method: 'POST' })
+  const data = await res.json()
+  if (!res.ok || !data.success) throw new Error(data.error || 'Failed to generate email')
+  return data
+}
+
+export async function fetchInbox(email, password) {
+  const url = `${API_BASE}/inbox?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+  const res = await fetch(url)
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || 'Failed to fetch inbox')
+  return data
+}
+
+export async function deleteEmail(email) {
+  const res = await fetch(`${API_BASE}/delete?email=${encodeURIComponent(email)}`)
+  return res.json()
+}
+
+export function escapeHtml(text) {
+  if (!text) return ''
+  const d = document.createElement('div')
+  d.textContent = text
+  return d.innerHTML
+}
+
+export function formatRelativeTime(dateString) {
+  if (!dateString) return ''
+  const diff = Date.now() - new Date(dateString).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'Just now'
+  if (mins < 60) return `${mins} min ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  return `${Math.floor(hrs / 24)}d ago`
+}
+
+export function formatFullDate(dateString) {
+  if (!dateString) return ''
+  return new Date(dateString).toLocaleString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+  })
+}
+
+const SESSION_KEY = 'tempEmail2Session'
+const MSGS_KEY = 'tempEmail2Messages'
+
+export function saveSession(email, password, expiresAt) {
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ email, password, expiresAt, ts: Date.now() }))
+}
+
+export function loadSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SESSION_KEY))
+    if (s && s.ts > Date.now() - 30 * 60 * 1000) return s
+    clearSession()
+  } catch { clearSession() }
+  return null
+}
+
+export function clearSession() {
+  localStorage.removeItem(SESSION_KEY)
+  localStorage.removeItem(MSGS_KEY)
+}
+
+export function saveCachedMessages(email, messages) {
+  localStorage.setItem(MSGS_KEY, JSON.stringify({ email, messages }))
+}
+
+export function loadCachedMessages(email) {
+  try {
+    const d = JSON.parse(localStorage.getItem(MSGS_KEY))
+    return d?.email === email ? d.messages : []
+  } catch { return [] }
+}

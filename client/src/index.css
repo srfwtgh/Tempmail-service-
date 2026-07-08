@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #FF6B35;
+  --color-accent-hover: #E55A2B;
+  --color-neo-border: #000000;
+  --color-neo-danger: #FF3B30;
+}
+
+:root {
+  --neo-bg: #FFFDF5;
+  --neo-card: #FFFFFF;
+  --neo-border: #000000;
+  --neo-text: #000000;
+  --neo-text-muted: #666666;
+  --neo-shadow: #000000;
+  --neo-input-bg: #FFFFFF;
+  --neo-row-hover: #F0ECE2;
+  --neo-toggle-off: #D1D5DB;
+  --neo-scrollbar: #D1D5DB;
+}
+
+.dark {
+  --neo-bg: #121212;
+  --neo-card: #1E1E1E;
+  --neo-border: #E5E7EB;
+  --neo-text: #F3F4F6;
+  --neo-text-muted: #9CA3AF;
+  --neo-shadow: #E5E7EB;
+  --neo-input-bg: #2A2A2A;
+  --neo-row-hover: #2A2A2A;
+  --neo-toggle-off: #4B5563;
+  --neo-scrollbar: #4B5563;
+}
+
+/* ── Background ──────────────────────────────────────────────── */
+.bg-neo {
+  background-color: var(--neo-bg);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 41px);
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.neo-card {
+  background: var(--neo-card);
+  border: 3px solid var(--neo-border);
+  box-shadow: 5px 5px 0 0 var(--neo-shadow);
+  transition: transform .15s, box-shadow .15s;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────── */
+.neo-nav {
+  background: var(--neo-card);
+  border-bottom: 3px solid var(--neo-border);
+  box-shadow: 0 4px 0 0 #FF6B35;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.neo-btn {
+  background: var(--neo-card);
+  border: 3px solid var(--neo-border);
+  box-shadow: 4px 4px 0 0 var(--neo-shadow);
+  color: var(--neo-text);
+  transition: all .1s;
+  cursor: pointer;
+}
+.neo-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--neo-shadow);
+}
+.neo-btn:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 0 var(--neo-shadow);
+}
+.neo-btn:focus-visible {
+  outline: 3px solid #FF6B35;
+  outline-offset: 2px;
+}
+
+.neo-btn-accent {
+  background: #FF6B35;
+  border: 3px solid var(--neo-border);
+  box-shadow: 4px 4px 0 0 var(--neo-shadow);
+  color: #fff;
+  transition: all .1s;
+  cursor: pointer;
+}
+.neo-btn-accent:hover:not(:disabled) {
+  background: #E55A2B;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--neo-shadow);
+}
+.neo-btn-accent:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 0 var(--neo-shadow);
+}
+.neo-btn-accent:focus-visible {
+  outline: 3px solid var(--neo-border);
+  outline-offset: 2px;
+}
+
+.neo-btn-danger {
+  background: #FF3B30;
+  border: 3px solid var(--neo-border);
+  box-shadow: 4px 4px 0 0 var(--neo-shadow);
+  color: #fff;
+  transition: all .1s;
+  cursor: pointer;
+}
+.neo-btn-danger:hover:not(:disabled) {
+  background: #E0352B;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--neo-shadow);
+}
+.neo-btn-danger:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 0 var(--neo-shadow);
+}
+.neo-btn-danger:focus-visible {
+  outline: 3px solid var(--neo-border);
+  outline-offset: 2px;
+}
+
+/* ── Input ───────────────────────────────────────────────────── */
+.neo-input {
+  background: var(--neo-input-bg);
+  border: 3px solid var(--neo-border);
+  color: var(--neo-text);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.neo-input::placeholder {
+  color: var(--neo-text-muted);
+}
+.neo-input:focus {
+  border-color: #FF6B35;
+  box-shadow: 4px 4px 0 0 var(--neo-shadow);
+  transform: translate(-1px, -1px);
+}
+
+/* ── Badge ───────────────────────────────────────────────────── */
+.neo-badge {
+  background: var(--neo-card);
+  border: 2px solid var(--neo-border);
+  box-shadow: 2px 2px 0 0 var(--neo-shadow);
+  color: var(--neo-text);
+}
+
+/* ── Toggle ──────────────────────────────────────────────────── */
+.neo-toggle-track {
+  width: 36px;
+  height: 20px;
+  background: var(--neo-toggle-off);
+  border: 3px solid var(--neo-border);
+  transition: background .15s;
+  cursor: pointer;
+}
+.neo-toggle-track.checked {
+  background: #FF6B35;
+}
+.neo-toggle-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--neo-card);
+  border: 2px solid var(--neo-border);
+  top: 1px;
+  left: 1px;
+  transition: transform .15s;
+}
+.neo-toggle-thumb.checked {
+  transform: translateX(16px);
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.neo-divider {
+  border-top: 3px solid var(--neo-border);
+}
+
+/* ── Row hover ───────────────────────────────────────────────── */
+.neo-row-hover {
+  transition: background .1s;
+}
+.neo-row-hover:hover {
+  background: var(--neo-row-hover);
+}
+
+/* ── Status bar ──────────────────────────────────────────────── */
+.neo-status {
+  background: var(--neo-card);
+  border: 3px solid var(--neo-border);
+  box-shadow: 5px 5px 0 0 var(--neo-shadow);
+}
+
+/* ── Modal backdrop ─────────────────────────────────────────── */
+.neo-backdrop {
+  background: color-mix(in srgb, var(--neo-text) 55%, transparent);
+}
+
+/* ── Grid layout ─────────────────────────────────────────────── */
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+@media (min-width: 1024px) {
+  .app-grid {
+    grid-template-columns: 380px 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fade-up { animation: fade-slide-up .4s ease-out both; }
+.animate-scale-in { animation: scale-in .2s ease-out both; }
+
+.msg-item { animation: fade-slide-up .35s ease-out both; }
+.msg-item:nth-child(1) { animation-delay: 30ms; }
+.msg-item:nth-child(2) { animation-delay: 60ms; }
+.msg-item:nth-child(3) { animation-delay: 90ms; }
+.msg-item:nth-child(4) { animation-delay: 120ms; }
+.msg-item:nth-child(5) { animation-delay: 150ms; }
+.msg-item:nth-child(6) { animation-delay: 180ms; }
+.msg-item:nth-child(7) { animation-delay: 210ms; }
+.msg-item:nth-child(8) { animation-delay: 240ms; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--neo-scrollbar); border: 2px solid var(--neo-border); }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--neo-scrollbar) 80%, #000); }
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up, .animate-scale-in, .msg-item { animation: none; }
+}
