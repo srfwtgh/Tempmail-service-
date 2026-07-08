@@ -2,7 +2,7 @@ import { escapeHtml, formatRelativeTime } from '../utils/tempEmailApi'
 
 export default function InboxView({ messages, onQuickView, searchQuery, onSearchChange }) {
   return (
-    <main className="flex flex-col min-h-0 p-3 lg:p-6 lg:pt-6">
+    <main className="flex flex-col min-h-0 p-3 md:p-4 lg:p-6 md:pt-4 lg:pt-6">
       <div className="neo-card rounded-none flex flex-col flex-1 min-h-0 max-w-full animate-fade-up">
         {/* Header */}
         <div className="flex items-center justify-between px-3 lg:px-6 py-2.5 lg:py-4 neo-divider shrink-0">

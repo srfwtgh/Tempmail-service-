@@ -46,7 +46,7 @@ export default function QuickViewModal({ message, onClose }) {
       <div className="absolute inset-0 neo-backdrop" />
 
       <div
-        className="relative w-full flex flex-col neo-card animate-scale-in rounded-none lg:rounded-none lg:max-w-4xl lg:max-h-[90vh] lg:m-4"
+        className="relative w-full flex flex-col neo-card animate-scale-in rounded-none md:rounded-none md:max-w-3xl md:max-h-[85vh] md:m-3 lg:max-w-4xl lg:max-h-[90vh] lg:m-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

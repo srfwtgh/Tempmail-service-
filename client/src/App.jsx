@@ -160,7 +160,7 @@ export default function App() {
           onSearchChange={setSearchQuery}
         />
 
-        <footer className="lg:col-span-2 text-center text-xs py-3 lg:py-5 px-3 lg:px-6 neo-divider" style={{ color: 'var(--neo-text-muted)' }}>
+        <footer className="md:col-span-2 text-center text-xs py-3 lg:py-5 px-3 lg:px-6 neo-divider" style={{ color: 'var(--neo-text-muted)' }}>
           Emails auto-delete after 60 minutes &middot; No data stored &middot; Open source
         </footer>
       </div>

@@ -5,7 +5,7 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
   return (
     <>
       {/* ── Mobile bar ───────────────────────────────────────── */}
-      <div className="lg:hidden w-full max-w-full">
+      <div className="md:hidden w-full max-w-full">
         {email ? (
           <div className="flex items-center gap-1.5 px-2.5 py-2 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)] w-full max-w-full overflow-x-hidden">
             <div className="flex-1 min-w-0 flex items-center gap-1.5">
@@ -60,8 +60,8 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
       </div>
 
       {/* ── Desktop panel ────────────────────────────────────── */}
-      <aside className="hidden lg:block p-6 lg:border-r-3 lg:border-[var(--neo-border)] lg:min-h-0 lg:overflow-y-auto">
-        <div className="neo-card rounded-none p-7 animate-fade-up">
+      <aside className="hidden md:block p-4 md:p-4 lg:p-6 md:border-r-3 md:border-[var(--neo-border)] md:min-h-0 md:overflow-y-auto">
+        <div className="neo-card rounded-none p-5 md:p-5 lg:p-7 animate-fade-up">
           <div className="mb-6">
             <label className="text-[10px] font-bold tracking-widest uppercase mb-2.5 block" style={{ color: 'var(--neo-text-muted)' }}>
               Your email address
@@ -119,7 +119,7 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
           </div>
 
           {email && (
-            <div className="neo-divider pt-4 animate-fade-in">
+            <div className="hidden lg:block neo-divider pt-4 animate-fade-in">
               <div className="grid grid-cols-2 gap-3">
                 <div className="neo-card rounded-none px-4 py-3 text-center" style={{ boxShadow: '3px 3px 0 0 var(--neo-shadow)' }}>
                   <p className="text-2xl font-black text-accent leading-none" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{messageCount}</p>

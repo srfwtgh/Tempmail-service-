@@ -1,6 +1,6 @@
 export default function Navbar({ email, messageCount, autoRefresh, onToggleAutoRefresh, darkMode, onToggleDark }) {
   return (
-    <header className="lg:col-span-2 neo-nav sticky top-0 z-30">
+    <header className="md:col-span-2 neo-nav sticky top-0 z-30">
       <div className="flex items-center justify-between px-3 lg:px-8 py-2.5 lg:py-3 max-w-full">
         <div className="flex items-center gap-2.5 lg:gap-3">
           <div className="flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 bg-accent border-3 border-[#000] shrink-0" style={{ boxShadow: '3px 3px 0 0 #000' }}>
