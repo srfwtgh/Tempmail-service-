@@ -5,9 +5,9 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
   return (
     <>
       {/* ── Mobile bar ───────────────────────────────────────── */}
-      <div className="lg:hidden">
+      <div className="lg:hidden w-full max-w-full">
         {email ? (
-          <div className="flex items-center gap-2 px-3 py-2.5 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)]">
+          <div className="flex items-center gap-2 px-3 py-2.5 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)] w-full max-w-full">
             <div className="flex-1 min-w-0 flex items-center gap-2">
               <div className="neo-input rounded-none px-3 py-2 text-xs w-full truncate font-bold select-all cursor-text">
                 {email}

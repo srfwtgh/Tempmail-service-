@@ -37,9 +37,6 @@
   --neo-scrollbar: #4B5563;
 }
 
-/* ── Global overflow guard ──────────────────────────────────── */
-html, body { overflow-x: hidden; }
-
 /* ── Background ──────────────────────────────────────────────── */
 .bg-neo {
   background-color: var(--neo-bg);
@@ -208,8 +205,14 @@ html, body { overflow-x: hidden; }
 .app-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+.app-grid > * {
+  min-width: 0;
 }
 @media (min-width: 1024px) {
   .app-grid {
