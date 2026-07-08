@@ -124,7 +124,7 @@ export default function App() {
         position="top-center"
         richColors
         closeButton
-        duration={4000}
+        duration={2500}
         toastOptions={{
           className: 'neo-toast',
           style: {
