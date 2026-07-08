@@ -1,4 +1,22 @@
-export default function StatusBar({ status }) {
+import { useRef, useCallback } from 'react'
+
+export default function StatusBar({ status, onDismiss }) {
+  const touchStartY = useRef(0)
+  const movedRef = useRef(false)
+
+  const handleTouchStart = useCallback((e) => {
+    touchStartY.current = e.touches[0].clientY
+    movedRef.current = false
+  }, [])
+
+  const handleTouchEnd = useCallback((e) => {
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    if (dy < -20) {
+      movedRef.current = true
+      onDismiss?.()
+    }
+  }, [onDismiss])
+
   const icons = {
     error: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
     success: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
@@ -18,7 +36,13 @@ export default function StatusBar({ status }) {
       }`}
     >
       {status && (
-        <div className={`flex items-center gap-3 px-5 py-3 neo-status rounded-none ${types[status.type]?.border || types.info.border}`} style={{ borderLeftWidth: '6px' }}>
+        <div
+          className={`flex items-center gap-3 px-5 py-3 neo-status rounded-none cursor-pointer select-none ${types[status.type]?.border || types.info.border}`}
+          style={{ borderLeftWidth: '6px' }}
+          onClick={onDismiss}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <svg className={`w-4 h-4 shrink-0 ${types[status.type]?.icon || types.info.icon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {icons[status.type] || icons.info}
           </svg>

@@ -165,7 +165,7 @@ export default function App() {
         </footer>
       </div>
 
-      <StatusBar status={status} />
+      <StatusBar status={status} onDismiss={() => setStatus(null)} />
 
       <QuickViewModal
         message={quickViewMsg}
