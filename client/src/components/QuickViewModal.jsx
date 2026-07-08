@@ -69,7 +69,7 @@ export default function QuickViewModal({ message, onClose }) {
 
         {/* Toggle */}
         {hasHtml && (
-          <div className="flex items-center gap-3 px-6 pt-3 pb-2 shrink-0">
+          <div className="flex items-center gap-3 px-4 lg:px-6 pt-3 pb-2 shrink-0">
             <button
               onClick={() => setShowHtml(true)}
               className={`px-3 py-1 text-xs font-bold rounded-none transition-all ${showHtml ? 'neo-btn-accent' : 'neo-btn'}`}
@@ -86,7 +86,7 @@ export default function QuickViewModal({ message, onClose }) {
         )}
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-4 text-sm leading-relaxed break-words" style={{ color: 'var(--neo-text)' }}>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 py-4 text-sm leading-relaxed break-words" style={{ color: 'var(--neo-text)' }}>
           {!hasContent ? (
             <div className="flex flex-col items-center justify-center py-14" style={{ color: 'var(--neo-text-muted)' }}>
               <svg className="w-10 h-10 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,7 @@ export default function QuickViewModal({ message, onClose }) {
               <p className="text-sm font-black">No content available</p>
             </div>
           ) : hasHtml && showHtml ? (
-            <div className="[&_img]:max-w-full [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: rawHtml }} />
+            <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: rawHtml }} />
           ) : (
             <pre className="whitespace-pre-wrap font-sans text-sm m-0" style={{ color: 'var(--neo-text)' }}>{escapeHtml(textContent || content)}</pre>
           )}

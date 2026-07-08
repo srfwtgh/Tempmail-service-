@@ -80,7 +80,7 @@ export default function InboxView({ messages, onQuickView, searchQuery, onSearch
                     )}
                   </div>
 
-                  <div className="flex items-center shrink-0">
+                  <div className="hidden lg:flex items-center shrink-0">
                     <span className="p-2 opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: 'var(--neo-text-muted)' }}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

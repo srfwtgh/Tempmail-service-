@@ -37,6 +37,9 @@
   --neo-scrollbar: #4B5563;
 }
 
+/* ── Global overflow guard ──────────────────────────────────── */
+html, body { overflow-x: hidden; }
+
 /* ── Background ──────────────────────────────────────────────── */
 .bg-neo {
   background-color: var(--neo-bg);
