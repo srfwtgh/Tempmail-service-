@@ -44,6 +44,12 @@ app.use(helmet({
     : false,
 }))
 
+// ── Permissions-Policy ────────────────────────────────────
+app.use((_req, res, next) => {
+  res.setHeader('Permissions-Policy', "camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()")
+  next()
+})
+
 // ── CORS ──────────────────────────────────────────────────────────
 app.use(cors({
   origin: (origin, cb) => {
@@ -60,12 +66,23 @@ app.use(express.json({ limit: '16kb' }))
 app.use(hpp())
 
 // ── Rate limiting ─────────────────────────────────────────────────
+// Stable client key behind CDNs/proxies: prefer the proxy-set client IP
+// (CF-Connecting-IP or X-Forwarded-For), never a raw socket that may vary.
+function clientKey(req) {
+  const cf = req.headers['cf-connecting-ip']
+  if (cf) return cf
+  const xff = req.headers['x-forwarded-for']
+  if (typeof xff === 'string' && xff.length) return xff.split(',')[0].trim()
+  return req.ip || req.socket.remoteAddress
+}
+
 app.use('/api', rateLimit({
   windowMs: 60_000,
   max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 30,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.path === '/api/health',
+  keyGenerator: clientKey,
   message: { success: false, error: 'Too many requests, please try again later.' },
 }))
 
@@ -112,21 +129,6 @@ app.post('/api/inbox', async (req, res) => {
   } catch (error) {
     if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
     if (!IS_PROD) console.error('Inbox error:', error)
-    res.status(502).json({ success: false, error: 'Upstream service unavailable' })
-  }
-})
-
-// ── Message ──────────────────────────────────────────────────────
-app.post('/api/message', async (req, res) => {
-  const { email, password, id } = req.body || {}
-  if (!email || !password || !id) return res.status(400).json({ success: false, error: 'Email, password, and id required' })
-  try {
-    const url = `${POMAILBOX_PROXY}?action=message&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(id)}`
-    const { status, data } = await proxyFetch(url)
-    res.status(status).json(data || { success: false, error: 'Invalid upstream response' })
-  } catch (error) {
-    if (error.name === 'AbortError') return res.status(504).json({ success: false, error: 'Upstream timed out' })
-    if (!IS_PROD) console.error('Message error:', error)
     res.status(502).json({ success: false, error: 'Upstream service unavailable' })
   }
 })

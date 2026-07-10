@@ -20,17 +20,6 @@ export async function fetchInbox(email, password) {
   return data
 }
 
-export async function fetchMessage(email, password, id) {
-  const res = await fetch(`${API_BASE}/message`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, id }),
-  })
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || 'Failed to fetch message')
-  return data
-}
-
 export async function deleteEmail(email) {
   const res = await fetch(`${API_BASE}/delete`, {
     method: 'DELETE',
