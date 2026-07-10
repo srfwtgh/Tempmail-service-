@@ -105,7 +105,7 @@ export default function App() {
 
   const handleDelete = useCallback(async () => {
     if (!confirm('Are you sure you want to delete this email?')) return
-    try { await deleteEmail(email) } catch { /* ignore */ }
+    try { await deleteEmail(email) } catch { }
     clearSession(); setEmail(''); setPassword(''); setMessages([])
     toast.success('Email deleted successfully')
   }, [email])

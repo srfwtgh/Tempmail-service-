@@ -11,7 +11,6 @@ import { existsSync } from 'fs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 
-// ── Configuration ─────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT, 10) || 3001
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const IS_PROD = NODE_ENV === 'production'
@@ -23,7 +22,6 @@ const FETCH_TIMEOUT_MS = parseInt(process.env.FETCH_TIMEOUT_MS, 10) || 20000
 
 app.set('trust proxy', 1)
 
-// ── Security headers ──────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: true,
@@ -44,13 +42,11 @@ app.use(helmet({
     : false,
 }))
 
-// ── Permissions-Policy ────────────────────────────────────
 app.use((_req, res, next) => {
   res.setHeader('Permissions-Policy', "camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()")
   next()
 })
 
-// ── CORS ──────────────────────────────────────────────────────────
 app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true)
@@ -65,9 +61,6 @@ app.use(cors({
 app.use(express.json({ limit: '16kb' }))
 app.use(hpp())
 
-// ── Rate limiting ─────────────────────────────────────────────────
-// Stable client key behind CDNs/proxies: prefer the proxy-set client IP
-// (CF-Connecting-IP or X-Forwarded-For), never a raw socket that may vary.
 function clientKey(req) {
   const cf = req.headers['cf-connecting-ip']
   if (cf) return cf
@@ -86,7 +79,6 @@ app.use('/api', rateLimit({
   message: { success: false, error: 'Too many requests, please try again later.' },
 }))
 
-// ── Upstream fetch helper with timeout ───────────────────────────
 async function proxyFetch(url) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
@@ -101,12 +93,10 @@ async function proxyFetch(url) {
   }
 }
 
-// ── Health ─────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', uptime: process.uptime(), timestamp: Date.now(), env: NODE_ENV })
 })
 
-// ── Generate ─────────────────────────────────────────────────────
 app.post('/api/generate', async (_req, res) => {
   try {
     const { status, data } = await proxyFetch(`${POMAILBOX_PROXY}?action=generate`)
@@ -118,7 +108,6 @@ app.post('/api/generate', async (_req, res) => {
   }
 })
 
-// ── Inbox ────────────────────────────────────────────────────────
 app.post('/api/inbox', async (req, res) => {
   const { email, password } = req.body || {}
   if (!email || !password) return res.status(400).json({ success: false, error: 'Email and password required' })
@@ -133,7 +122,6 @@ app.post('/api/inbox', async (req, res) => {
   }
 })
 
-// ── Delete ───────────────────────────────────────────────────────
 app.delete('/api/delete', async (req, res) => {
   const { email } = req.body || {}
   if (!email) return res.status(400).json({ success: false, error: 'Email required' })
@@ -148,10 +136,8 @@ app.delete('/api/delete', async (req, res) => {
   }
 })
 
-// ── JSON 404 for unknown API routes ─────────────────────────────
 app.use('/api', (_req, res) => res.status(404).json({ success: false, error: 'Not found' }))
 
-// ── Serve built client in production ─────────────────────────────
 if (IS_PROD) {
   if (existsSync(CLIENT_DIST)) {
     app.use(express.static(CLIENT_DIST, {
@@ -165,18 +151,15 @@ if (IS_PROD) {
   }
 }
 
-// ── Global error handler ─────────────────────────────────────────
 app.use((err, _req, res, _next) => {
   if (!IS_PROD) console.error('Unhandled error:', err)
   res.status(err.status || 500).json({ success: false, error: IS_PROD ? 'Internal server error' : err.message })
 })
 
-// ── Start ─────────────────────────────────────────────────────────
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Temp Email API — ${NODE_ENV} — http://0.0.0.0:${PORT}`)
 })
 
-// ── Graceful shutdown ────────────────────────────────────────────
 const shutdown = (signal) => {
   console.log(`\n[${signal}] Shutting down...`)
   server.close(() => { console.log('Server closed.'); process.exit(0) })

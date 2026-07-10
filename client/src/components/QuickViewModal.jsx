@@ -2,7 +2,6 @@ import { useState } from 'react'
 import DOMPurify from 'dompurify'
 import { formatFullDate } from '../utils/tempEmailApi'
 
-// Force every link to open safely in a new tab.
 DOMPurify.addHook('afterSanitizeAttributes', (node) => {
   if ('target' in node) {
     node.setAttribute('target', '_blank')
@@ -78,7 +77,6 @@ export default function QuickViewModal({ message, onClose }) {
         className="relative w-full flex flex-col neo-card animate-scale-in rounded-none md:rounded-none md:max-w-3xl md:max-h-[85vh] md:m-3 lg:max-w-4xl lg:max-h-[90vh] lg:m-4"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex items-start justify-between px-4 lg:px-6 pt-4 lg:pt-6 pb-4 neo-divider shrink-0">
           <div className="min-w-0 flex-1 pr-4">
             <h2 className="text-base lg:text-xl font-black truncate" style={{ fontFamily: "'Space Grotesk', sans-serif", color: 'var(--neo-text)' }}>
@@ -96,7 +94,6 @@ export default function QuickViewModal({ message, onClose }) {
           </button>
         </div>
 
-        {/* Toggle */}
         {hasHtml && (
           <div className="flex items-center gap-3 px-4 lg:px-6 pt-3 pb-2 shrink-0">
             <button
@@ -114,7 +111,6 @@ export default function QuickViewModal({ message, onClose }) {
           </div>
         )}
 
-        {/* Body */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 py-4 text-sm leading-relaxed break-words" style={{ color: 'var(--neo-text)' }}>
           {!hasContent ? (
             <div className="flex flex-col items-center justify-center py-14" style={{ color: 'var(--neo-text-muted)' }}>
@@ -135,7 +131,6 @@ export default function QuickViewModal({ message, onClose }) {
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-end px-4 lg:px-6 py-4 neo-divider shrink-0">
           <button onClick={onClose} className="neo-btn-accent rounded-none px-5 py-2 text-sm font-bold">
             Close

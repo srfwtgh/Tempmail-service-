@@ -37,7 +37,6 @@
   --neo-scrollbar: #4B5563;
 }
 
-/* ── Background ──────────────────────────────────────────────── */
 .bg-neo {
   background-color: var(--neo-bg);
   background-image:
@@ -45,7 +44,6 @@
     repeating-linear-gradient(90deg, transparent, transparent 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 40px, color-mix(in srgb, var(--neo-border) 5%, transparent) 41px);
 }
 
-/* ── Card ────────────────────────────────────────────────────── */
 .neo-card {
   background: var(--neo-card);
   border: 3px solid var(--neo-border);
@@ -53,14 +51,12 @@
   transition: transform .15s, box-shadow .15s;
 }
 
-/* ── Navbar ──────────────────────────────────────────────────── */
 .neo-nav {
   background: var(--neo-card);
   border-bottom: 3px solid var(--neo-border);
   box-shadow: 0 4px 0 0 #FF6B35;
 }
 
-/* ── Buttons ─────────────────────────────────────────────────── */
 .neo-btn {
   background: var(--neo-card);
   border: 3px solid var(--neo-border);
@@ -126,7 +122,6 @@
   outline-offset: 2px;
 }
 
-/* ── Input ───────────────────────────────────────────────────── */
 .neo-input {
   background: var(--neo-input-bg);
   border: 3px solid var(--neo-border);
@@ -143,7 +138,6 @@
   transform: translate(-1px, -1px);
 }
 
-/* ── Badge ───────────────────────────────────────────────────── */
 .neo-badge {
   background: var(--neo-card);
   border: 2px solid var(--neo-border);
@@ -151,7 +145,6 @@
   color: var(--neo-text);
 }
 
-/* ── Toggle ──────────────────────────────────────────────────── */
 .neo-toggle-track {
   position: relative;
   width: 36px;
@@ -178,12 +171,10 @@
   transform: translateX(16px);
 }
 
-/* ── Divider ─────────────────────────────────────────────────── */
 .neo-divider {
   border-top: 3px solid var(--neo-border);
 }
 
-/* ── Row hover ───────────────────────────────────────────────── */
 .neo-row-hover {
   transition: background .1s;
 }
@@ -191,19 +182,16 @@
   background: var(--neo-row-hover);
 }
 
-/* ── Status bar ──────────────────────────────────────────────── */
 .neo-status {
   background: var(--neo-card);
   border: 3px solid var(--neo-border);
   box-shadow: 5px 5px 0 0 var(--neo-shadow);
 }
 
-/* ── Modal backdrop ─────────────────────────────────────────── */
 .neo-backdrop {
   background: color-mix(in srgb, var(--neo-text) 55%, transparent);
 }
 
-/* ── Grid layout ─────────────────────────────────────────────── */
 .app-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -229,7 +217,6 @@
   }
 }
 
-/* ── Animations ─────────────────────────────────────────────── */
 @keyframes fade-slide-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -251,18 +238,15 @@
 .msg-item:nth-child(7) { animation-delay: 210ms; }
 .msg-item:nth-child(8) { animation-delay: 240ms; }
 
-/* ── Scrollbar ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--neo-scrollbar); border: 2px solid var(--neo-border); }
 ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--neo-scrollbar) 80%, #000); }
 
-/* ── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up, .animate-scale-in, .msg-item { animation: none; }
 }
 
-/* ── Marked content (plain text emails) ─────────────────────── */
 .prose p { margin: 0.4em 0; }
 .prose ul, .prose ol { padding-left: 1.5em; margin: 0.4em 0; }
 .prose li { margin: 0.2em 0; }
@@ -272,7 +256,6 @@
 .prose pre { background: var(--neo-input-bg); border: 3px solid var(--neo-border); padding: 1em; overflow-x: auto; }
 .prose blockquote { border-left: 4px solid #FF6B35; padding-left: 1em; margin: 0.5em 0; color: var(--neo-text-muted); }
 
-/* ── Sonner toast neobrutalism override ─────────────────────── */
 [data-sonner-toaster] {
   --normal-bg: var(--neo-card) !important;
   --normal-border: var(--neo-border) !important;

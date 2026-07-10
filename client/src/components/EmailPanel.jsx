@@ -4,7 +4,6 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
 
   return (
     <>
-      {/* ── Mobile bar ───────────────────────────────────────── */}
       <div className="md:hidden w-full max-w-full">
         {email ? (
           <div className="flex items-center gap-1.5 px-2.5 py-2 border-b-3 border-[var(--neo-border)] bg-[var(--neo-card)] w-full max-w-full overflow-x-hidden">
@@ -59,7 +58,6 @@ export default function EmailPanel({ email, generating, refreshing, onGenerate, 
         )}
       </div>
 
-      {/* ── Desktop panel ────────────────────────────────────── */}
       <aside className="hidden md:block p-4 md:p-4 lg:p-6 md:border-r-3 md:border-[var(--neo-border)] md:min-h-0 md:overflow-y-auto">
         <div className="neo-card rounded-none p-5 md:p-5 lg:p-7 animate-fade-up">
           <div className="mb-6">

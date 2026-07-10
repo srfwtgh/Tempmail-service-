@@ -60,7 +60,6 @@ export default function InboxView({ messages, onQuickView, searchQuery, onSearch
   return (
     <main className="flex flex-col min-h-0 p-3 md:p-4 lg:p-6 md:pt-4 lg:pt-6">
       <div className="neo-card rounded-none flex flex-col flex-1 min-h-0 max-w-full animate-fade-up">
-        {/* Header */}
         <div className="flex items-center justify-between px-3 lg:px-6 py-2.5 lg:py-4 neo-divider shrink-0">
           <div className="flex items-center gap-2 lg:gap-3">
             <div className="flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 bg-accent border-3 border-[#000] shrink-0" style={{ boxShadow: '2px 2px 0 0 #000' }}>
@@ -89,7 +88,6 @@ export default function InboxView({ messages, onQuickView, searchQuery, onSearch
           </div>
         </div>
 
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto">
           {!messages || messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 lg:py-20" style={{ color: 'var(--neo-text-muted)' }}>
