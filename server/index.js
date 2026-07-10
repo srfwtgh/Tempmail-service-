@@ -15,7 +15,7 @@ const app = express()
 const PORT = parseInt(process.env.PORT, 10) || 3001
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const IS_PROD = NODE_ENV === 'production'
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,https://temp-email-app.onrender.com,https://mailo.dpdns.org')
   .split(',').map(s => s.trim()).filter(Boolean)
 const POMAILBOX_PROXY = process.env.POMAILBOX_PROXY || 'https://fasttoolshq.com/tools/temp-email-2/temp-email-api.php'
 const CLIENT_DIST = join(__dirname, '..', 'client', 'dist')
@@ -49,7 +49,7 @@ app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true)
     if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
-    cb(new Error('CORS not allowed'))
+    cb(null, false)
   },
   methods: ['GET', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type'],
