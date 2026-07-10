@@ -5,7 +5,7 @@ import EmailPanel from './components/EmailPanel'
 import InboxView from './components/InboxView'
 import QuickViewModal from './components/QuickViewModal'
 import {
-  generateEmail, fetchInbox, deleteEmail,
+  generateEmail, fetchInbox, fetchMessage, deleteEmail,
   saveSession, loadSession, clearSession,
   saveCachedMessages, loadCachedMessages,
 } from './utils/tempEmailApi'
@@ -110,6 +110,23 @@ export default function App() {
     toast.success('Email deleted successfully')
   }, [email])
 
+  const handleQuickView = useCallback(async (msg) => {
+    setQuickViewMsg(msg)
+    if (!email || !password || !msg.id) return
+    try {
+      const data = await fetchMessage(email, password, msg.id)
+      if (data && data.success && data.message) {
+        setQuickViewMsg(prev =>
+          prev && String(prev.id) === String(msg.id)
+            ? { ...data.message, id: msg.id, from: data.message.from || msg.from, subject: data.message.subject || msg.subject, date: data.message.date || msg.date }
+            : prev
+        )
+      }
+    } catch {
+      // keep showing the inbox-provided message
+    }
+  }, [email, password])
+
   const filteredMessages = searchQuery
     ? messages.filter(m =>
         (m.from && m.from.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -166,13 +183,13 @@ export default function App() {
 
         <InboxView
           messages={filteredMessages}
-          onQuickView={setQuickViewMsg}
+          onQuickView={handleQuickView}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
         />
 
         <footer className="md:col-span-2 text-center text-xs py-3 lg:py-5 px-3 lg:px-6 neo-divider" style={{ color: 'var(--neo-text-muted)' }}>
-          Emails auto-delete after 60 minutes &middot; No data stored &middot; Open source
+          Emails auto-delete after 60 minutes &middot; Session cached locally for 30 min &middot; Open source
         </footer>
       </div>
 

@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import DOMPurify from 'dompurify'
-import { marked } from 'marked'
 import { formatFullDate } from '../utils/tempEmailApi'
+
+// Force every link to open safely in a new tab.
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+  if ('target' in node) {
+    node.setAttribute('target', '_blank')
+    node.setAttribute('rel', 'noopener noreferrer')
+  }
+})
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
 
 function resolveCidImages(html, attachments) {
   if (!html || !attachments || attachments.length === 0) return html
@@ -9,7 +20,7 @@ function resolveCidImages(html, attachments) {
   attachments.forEach(att => {
     if (att.contentId && att.content) {
       const cid = att.contentId.replace(/[<>]/g, '')
-      result = result.replace(new RegExp(`cid:${cid}`, 'g'), `data:${att.contentType};base64,${att.content}`)
+      result = result.replace(new RegExp(`cid:${escapeRegex(cid)}`, 'g'), `data:${att.contentType};base64,${att.content}`)
     }
   })
   return result
@@ -53,7 +64,7 @@ export default function QuickViewModal({ message, onClose }) {
   let renderedText = ''
   if (textContent) {
     try {
-      renderedText = DOMPurify.sanitize(marked.parse(textContent))
+      renderedText = escapeHtml(textContent)
     } catch {
       renderedText = escapeHtml(textContent)
     }
@@ -114,7 +125,7 @@ export default function QuickViewModal({ message, onClose }) {
               <p className="text-sm font-black">No content available</p>
             </div>
           ) : hasHtml && showHtml ? (
-            <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawHtml, { ADD_TAGS: ['style'], ADD_ATTR: ['target'] }) }} />
+            <div className="max-w-full [&_img]:max-w-full [&_table]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_a]:text-accent [&_a]:underline [&_a]:font-bold"               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawHtml, { FORBID_TAGS: ['style'], ADD_ATTR: ['target'] }) }} />
           ) : (
             <div
               className="prose prose-sm max-w-none prose-p:my-1 prose-pre:my-2 prose-a:text-accent prose-strong:font-black"

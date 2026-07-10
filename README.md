@@ -49,6 +49,7 @@ npm start            # Serves built client from Express on :3001
 | `ALLOWED_ORIGINS` | `http://localhost:5173` | Comma-separated CORS origins |
 | `RATE_LIMIT_MAX` | `30` | Max API requests per minute |
 | `FETCH_TIMEOUT_MS` | `20000` | Upstream API timeout in ms |
+| `POMAILBOX_PROXY` | `https://fasttoolshq.com/.../temp-email-api.php` | Upstream temp-email API endpoint (swappable) |
 
 ## Project Structure
 
@@ -56,8 +57,8 @@ npm start            # Serves built client from Express on :3001
 temp-email-app/
 ├── client/             # React + Vite frontend
 │   ├── src/
-│   │   ├── components/ # Navbar, EmailPanel, InboxView, QuickViewModal, StatusBar
-│   │   ├── utils/      # tempEmailApi.js, helpers.js
+│   │   ├── components/ # Navbar, EmailPanel, InboxView, QuickViewModal, ErrorBoundary
+│   │   ├── utils/      # tempEmailApi.js
 │   │   ├── App.jsx
 │   │   └── index.css   # Neo theme, dark mode variables
 │   └── index.html
@@ -66,3 +67,8 @@ temp-email-app/
 ├── package.json        # Root orchestration scripts
 └── render.yaml         # Render deploy config
 ```
+
+## Notes
+
+- The backend is a thin proxy to a third-party temp-email API (FastToolsHQ by default). If that endpoint is down or changes, the service stops working — swap it via `POMAILBOX_PROXY`.
+- The generated email + password are cached in `localStorage` for 30 minutes so the inbox survives a page refresh. Clearing site data or closing past 30 min ends the session.

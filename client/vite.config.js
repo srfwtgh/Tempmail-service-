@@ -20,7 +20,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) return 'vendor'
-          if (id.includes('node_modules/flowbite-react')) return 'flowbite'
         },
       },
     },

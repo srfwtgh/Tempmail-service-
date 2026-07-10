@@ -17,7 +17,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 const IS_PROD = NODE_ENV === 'production'
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
   .split(',').map(s => s.trim()).filter(Boolean)
-const POMAILBOX_PROXY = 'https://fasttoolshq.com/tools/temp-email-2/temp-email-api.php'
+const POMAILBOX_PROXY = process.env.POMAILBOX_PROXY || 'https://fasttoolshq.com/tools/temp-email-2/temp-email-api.php'
 const CLIENT_DIST = join(__dirname, '..', 'client', 'dist')
 const FETCH_TIMEOUT_MS = parseInt(process.env.FETCH_TIMEOUT_MS, 10) || 20000
 
@@ -29,11 +29,11 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", "'unsafe-inline'"],
-      'style-src': ["'self'", "'unsafe-inline'"],
+      'script-src': ["'self'"],
+      'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'img-src': ["'self'", 'data:', 'https:'],
       'connect-src': ["'self'"],
-      'font-src': ["'self'"],
+      'font-src': ["'self'", 'https://fonts.gstatic.com'],
       'object-src': ["'none'"],
       'frame-ancestors': ["'none'"],
     },
@@ -47,8 +47,9 @@ app.use(helmet({
 // ── CORS ──────────────────────────────────────────────────────────
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
-    cb(null, false)
+    if (!origin) return cb(null, true)
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
+    cb(new Error('CORS not allowed'))
   },
   methods: ['GET', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type'],
@@ -64,6 +65,7 @@ app.use('/api', rateLimit({
   max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 30,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.path === '/api/health',
   message: { success: false, error: 'Too many requests, please try again later.' },
 }))
 
@@ -100,8 +102,8 @@ app.post('/api/generate', async (_req, res) => {
 })
 
 // ── Inbox ────────────────────────────────────────────────────────
-app.get('/api/inbox', async (req, res) => {
-  const { email, password } = req.query
+app.post('/api/inbox', async (req, res) => {
+  const { email, password } = req.body || {}
   if (!email || !password) return res.status(400).json({ success: false, error: 'Email and password required' })
   try {
     const url = `${POMAILBOX_PROXY}?action=inbox&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
@@ -115,8 +117,8 @@ app.get('/api/inbox', async (req, res) => {
 })
 
 // ── Message ──────────────────────────────────────────────────────
-app.get('/api/message', async (req, res) => {
-  const { email, password, id } = req.query
+app.post('/api/message', async (req, res) => {
+  const { email, password, id } = req.body || {}
   if (!email || !password || !id) return res.status(400).json({ success: false, error: 'Email, password, and id required' })
   try {
     const url = `${POMAILBOX_PROXY}?action=message&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(id)}`
@@ -131,7 +133,7 @@ app.get('/api/message', async (req, res) => {
 
 // ── Delete ───────────────────────────────────────────────────────
 app.delete('/api/delete', async (req, res) => {
-  const { email } = req.query
+  const { email } = req.body || {}
   if (!email) return res.status(400).json({ success: false, error: 'Email required' })
   try {
     const url = `${POMAILBOX_PROXY}?action=delete&email=${encodeURIComponent(email)}`
@@ -144,6 +146,9 @@ app.delete('/api/delete', async (req, res) => {
   }
 })
 
+// ── JSON 404 for unknown API routes ─────────────────────────────
+app.use('/api', (_req, res) => res.status(404).json({ success: false, error: 'Not found' }))
+
 // ── Serve built client in production ─────────────────────────────
 if (IS_PROD) {
   if (existsSync(CLIENT_DIST)) {
@@ -151,7 +156,7 @@ if (IS_PROD) {
       maxAge: '1y', immutable: true,
       setHeaders: (res, path) => { if (path.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache') },
     }))
-    app.get('*', (_req, res) => res.sendFile(join(CLIENT_DIST, 'index.html')))
+    app.get(/^(?!\/api).*/, (_req, res) => res.sendFile(join(CLIENT_DIST, 'index.html')))
     console.log(`[prod] Serving static client from ${CLIENT_DIST}`)
   } else {
     console.warn('[prod] Client dist not found — run `cd client && npm run build` first')
